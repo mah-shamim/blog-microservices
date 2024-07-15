@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: ./user-service
+    ports:
+      - 8001:80
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=root
+      - DB_NAME=blog
+    depends_on:
+      - db
+
+  post-service:
+    build: ./post-service
+    ports:
+      - 8002:80
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=root
+      - DB_NAME=blog
+    depends_on:
+      - db
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - 8000:80
+    depends_on:
+      - user-service
+      - post-service
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blog
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3308:3306
