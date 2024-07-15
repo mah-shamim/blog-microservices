@@ -4,3 +4,4 @@
 
 /user-service/.env
 /post-service/.env
+/api-gateway/.env
