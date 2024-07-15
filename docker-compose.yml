@@ -6,12 +6,10 @@ services:
     ports:
       - 8001:80
     environment:
-      - DB_CONNECTION=mysql
       - DB_HOST=db
-      - DB_PORT=3306
-      - DB_DATABASE=user_service
-      - DB_USERNAME=root
-      - DB_PASSWORD=root
+      - DB_USER=root
+      - DB_PASS=root
+      - DB_NAME=blog
     depends_on:
       - db
 
@@ -20,12 +18,10 @@ services:
     ports:
       - 8002:80
     environment:
-      - DB_CONNECTION=mysql
       - DB_HOST=db
-      - DB_PORT=3306
-      - DB_DATABASE=post_service
-      - DB_USERNAME=root
-      - DB_PASSWORD=root
+      - DB_USER=root
+      - DB_PASS=root
+      - DB_NAME=blog
     depends_on:
       - db
 
@@ -41,7 +37,8 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: user_service
-      MYSQL_DATABASE: post_service
+      MYSQL_DATABASE: blog
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - 3306:3306
+      - 3308:3306
